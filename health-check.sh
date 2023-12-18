@@ -1,9 +1,3 @@
-commit=true
-origin=$(git remote get-url origin)
-if [[ $origin == *statsig-io/statuspage* ]]
-then
-  commit=false
-fi
 
 KEYSARRAY=()
 URLSARRAY=()
