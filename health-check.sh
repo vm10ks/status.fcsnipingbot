@@ -55,4 +55,9 @@ do
     echo "    $dateTime, $result"
   fi
 done
-
+if [[ $commit == true ]]
+then
+  git add -A --force logs/
+  git commit -am '[Automated] Update Health Check Logs'
+  git push
+fi
