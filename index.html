@@ -1,52 +1,28 @@
-<html>
-  <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HSTN SERVERS</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="index.css" />
     <script src="index.js"></script>
-  </head>
-  <body>
+</head>
+<body>
     <div class="pageContainer">
-      <div class="headline">
-        <img src="logo.png" alt="Logo" width="200px" />
-        <span> WEBSITES STATUS </span>
-      </div>
-      <div id="reports" class="reportContainer"></div>
-      <div id="tooltip" class="tooltip" style="opacity: 0">
-        <div id="tooltipArrow" class="tooltipArrow"></div>
-        <div id="tooltipDateTime" class="tooltipDateTime"></div>
-        <div id="tooltipStatus" class="tooltipStatus"></div>
-        <hr />
-        <div id="tooltipDescription" class="tooltipDescription"></div>
-      </div>
-      <div id="templates" style="display: none">
-        <div
-          id="statusSquareTemplate"
-          class="statusSquare $color"
-          data-status="$color"
-        ></div>
-        <div id="statusLineTemplate" class="statusLine"></div>
-        <div
-          id="statusStreamContainerTemplate"
-          class="statusStreamContainer"
-        ></div>
-        <div id="statusContainerTemplate" class="statusContainer">
-          <div class="statusHeader">
-            <h6 class="statusTitle">$title&nbsp;</h6>
-            <div class="$color statusHeadline">$status</div>
-          </div>
-          <div class="statusSubtitle">
-            <div class="sectionUrl"><a href="$url">$url</a></div>
+        <!-- Your existing content -->
+
+        <!-- Updated link with target="_blank" attribute -->
+        <div class="statusSubtitle">
+            <div class="sectionUrl"><a href="$url" target="_blank">$url</a></div>
             <div class="statusUptime">$upTime in the last 30 days</div>
-          </div>
         </div>
-      </div>
     </div>
     <footer>
-      i hope you're satisfied with our products       
+        i hope you're satisfied with our products
     </footer>
-  </body>
-  <script>
-    genAllReports();
-  </script>
+    <script>
+        genAllReports();
+    </script>
+</body>
 </html>
