@@ -1,4 +1,3 @@
-
 commit=true
 origin=$(git remote get-url origin)
 if [[ $origin == *statsig-io/statuspage* ]]
