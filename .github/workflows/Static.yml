@@ -1,4 +1,4 @@
-# Siimple workflow for deploying static content to GitHub Pages
+# Siimple workflow for deploying sttic content to GitHub Pages
 name: Deploy static content to Pages
 
 on:
