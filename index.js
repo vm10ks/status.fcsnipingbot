@@ -8,8 +8,8 @@ async function genReportLog(container, key, url) {
   }
 
   const normalized = normalizeData(statusLines);
-  const ping = await getPing(url); // Fetch the ping
-  const statusStream = constructStatusStream(key, url, normalized, ping);
+  const lastPing = getLastPing(statusLines); // Get last ping from log
+  const statusStream = constructStatusStream(key, url, normalized, lastPing);
   container.appendChild(statusStream);
 }
 
@@ -29,24 +29,24 @@ function constructStatusStream(key, url, uptimeData, ping) {
     color: color,
     status: getStatusText(color),
     upTime: uptimeData.upTime,
-    ping: ping ? ping + ' ms' : 'N/A',  // Display the ping beside the title
+    ping: ping ? ping + ' ms' : 'N/A',  // Ensure the ping is displayed
   });
 
   container.appendChild(streamContainer);
   return container;
 }
 
-async function getPing(url) {
-  try {
-    const parsedUrl = new URL(url);
-    const hostname = parsedUrl.hostname;
-    const response = await fetch("/ping?host=" + hostname);  // You need a backend ping endpoint or service for this
-    const ping = await response.text();
-    return ping;
-  } catch (error) {
-    console.error("Ping failed for " + url, error);
-    return null;
+// This function extracts the ping from the last log entry
+function getLastPing(statusLines) {
+  const lines = statusLines.trim().split('\n');
+  if (lines.length > 0) {
+    const lastLine = lines[lines.length - 1];
+    const pingMatch = lastLine.match(/ping:\s([0-9.]+)\sms/);
+    if (pingMatch) {
+      return pingMatch[1];
+    }
   }
+  return null;
 }
 
-// Other functions remain the same
+// Other functions remain unchanged
