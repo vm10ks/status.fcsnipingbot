@@ -29,8 +29,12 @@ do
   url="${URLSARRAY[index]}"
   echo "  $key=$url"
 
-  # Perform ping check and record the ping time
-  pingTime=$(ping -c 1 -q $(echo $url | awk -F/ '{print $3}') | awk -F'/' 'END{ print (/^rtt/? $5" ms":"timeout") }')
+  hostname=$(echo "$url" | awk -F/ '{print $3}')  # Extract hostname from URL
+  pingTime=$(ping -c 1 -w 2 $hostname | grep 'time=' | awk -F'time=' '{print $2}' | awk '{print $1}')  # Ping and extract time
+
+  if [ -z "$pingTime" ]; then
+    pingTime="N/A"
+  fi
 
   for i in 1 2 3 4; 
   do
@@ -45,17 +49,13 @@ do
     fi
     sleep 5
   done
-
   dateTime=$(date +'%Y-%m-%d %H:%M')
-
-  # Log both HTTP status and ping time
   if [[ $commit == true ]]
   then
-    echo "$dateTime, $result, Ping: $pingTime" >> "logs/${key}_report.log"
-    # By default, we keep 2000 last log entries.  Feel free to modify this to meet your needs.
+    echo "$dateTime, $result, ping: ${pingTime} ms" >> "logs/${key}_report.log"  # Log ping time
     echo "$(tail -2000 logs/${key}_report.log)" > "logs/${key}_report.log"
   else
-    echo "    $dateTime, $result, Ping: $pingTime"
+    echo "    $dateTime, $result, ping: ${pingTime} ms"
   fi
 done
 
