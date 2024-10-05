@@ -32,13 +32,12 @@
         ></div>
         <div id="statusContainerTemplate" class="statusContainer">
           <div class="statusHeader">
-            <h6 class="statusTitle">$title&nbsp;</h6>
+            <h6 class="statusTitle">$title&nbsp;<span class="ping">Ping: $ping</span></h6>  <!-- Added Ping Display Here -->
             <div class="$color statusHeadline">$status</div>
           </div>
           <div class="statusSubtitle">
             <div class="sectionUrl"><a href="$url">$url</a></div>
             <div class="statusUptime">$upTime in the last 30 days</div>
-            <div class="statusPing">Ping: $ping ms</div> <!-- Added Ping display -->
           </div>
         </div>
       </div>
