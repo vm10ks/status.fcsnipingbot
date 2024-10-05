@@ -8,11 +8,25 @@ async function genReportLog(container, key, url) {
   }
 
   const normalized = normalizeData(statusLines);
-  const statusStream = constructStatusStream(key, url, normalized);
+  const statusStream = await constructStatusStream(key, url, normalized); // Added await to handle async ping
   container.appendChild(statusStream);
 }
 
-function constructStatusStream(key, url, uptimeData) {
+// Function to get ping for a given URL
+async function getPing(url) {
+  const startTime = Date.now();
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Network response was not ok");
+  } catch (error) {
+    console.error("Ping error: ", error);
+  }
+  const endTime = Date.now();
+  const ping = endTime - startTime;
+  return ping;
+}
+
+async function constructStatusStream(key, url, uptimeData) {
   let streamContainer = templatize("statusStreamContainerTemplate");
   for (var ii = maxDays - 1; ii >= 0; ii--) {
     let line = constructStatusLine(key, ii, uptimeData[ii]);
@@ -22,12 +36,16 @@ function constructStatusStream(key, url, uptimeData) {
   const lastSet = uptimeData[0];
   const color = getColor(lastSet);
 
+  // Get the ping time for the URL
+  const ping = await getPing(url);
+
   const container = templatize("statusContainerTemplate", {
     title: key,
     url: url,
     color: color,
     status: getStatusText(color),
     upTime: uptimeData.upTime,
+    ping: ping + ' ms' // Add ping time to the status
   });
 
   container.appendChild(streamContainer);
@@ -130,9 +148,9 @@ function getStatusDescriptiveText(color) {
     : "Unknown";
 }
 
-function getTooltip(key, date, quartile, color) {
+function getTooltip(key, date, color) {
   let statusText = getStatusText(color);
-  return `${key} | ${date.toDateString()} : ${quartile} : ${statusText}`;
+  return `${key} | ${date.toDateString()} : ${statusText}`;
 }
 
 function create(tag, className) {
